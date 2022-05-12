@@ -12,7 +12,6 @@ from sklearn.cluster import KMeans
 import torch
 from torch import nn, optim
 import auto_encoder
-from timeit import default_timer as timer
 
 
 def get_data(train_csv, test_csv):
@@ -182,6 +181,14 @@ def k_means(x, y):
     return rand_score(y, y_pred), pd.DataFrame(y_pred, columns=['Population'])['Population'].astype(str)
 
 
+def run_inference(x_train, x_test, y_train, y_test, n_dimensions):
+    print("Logistic Regression:", linear_regression(x_train, y_train, x_test, y_test))
+    print("Random Forest:", random_forest(x_train, y_train, x_test, y_test))
+    print("SVM:", svm(x_train, y_train, x_test, y_test))
+    print("MLP:", mlp(x_train, y_train, x_test, y_test))
+    plot_dimensions(x_train, y_train, x_test, y_test, title="Populations After Running PCA to {} Dimensions".format(n_dimensions))
+
+
 if __name__ == "__main__":
     x_train, y_train, x_test, y_test = get_data(train_csv='./data/chr1_train.csv', test_csv='./data/chr1_test.csv')
     # # plot_eigenvalues(x_train)
@@ -191,6 +198,9 @@ if __name__ == "__main__":
     x = np.concatenate((x_train, x_test), axis=0)
     y = pd.concat([y_train, y_test])
     n_dimensions = 2
+
+    x_train_pca, x_test_pca = apply_pca(x_train, x_test, pca_shape=n_dimensions)
+    run_inference(x_train, x_test, y_train, y_test, n_dimensions)
 
     x_train_pca, x_test_pca = apply_pca(x_train, x_test, pca_shape=n_dimensions)
     print("Logistic Regression:", linear_regression(x_train_pca, y_train, x_test_pca, y_test))
