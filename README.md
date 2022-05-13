@@ -7,7 +7,7 @@ The focus of this project is to explore the viability of using autoencoders for 
 
 Each dimensionality reduction method is tested on various classication models. The classification accuracies are presented in the table below:
 
-<center>
+<div align="center">
 
 |                       | PCA    | UMAP     | AE    | CAE       | LSTMAE    | GRUAE     |
 | --------------------- | ------ | ----     | ----- | -----     | --------- | --------- |
@@ -16,7 +16,7 @@ Each dimensionality reduction method is tested on various classication models. T
 | SVM                   | 0.908  | 0.934    | 0.960 | **0.976** | 0.972     | 0.972     |
 | MLP                   | 0.916  | 0.934    | 0.956 | **0.974** | 0.970     | **0.974** |
 
-</center>
+</div>
 
 ## Setup
 
