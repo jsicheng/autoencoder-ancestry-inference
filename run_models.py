@@ -14,6 +14,9 @@ from torch import nn, optim
 import auto_encoder
 
 
+RANDOM_SEED = 0
+
+
 def get_data(train_csv, test_csv):
     train_df = pd.read_csv(train_csv, index_col=0)
     test_df = pd.read_csv(test_csv, index_col=0)
@@ -25,15 +28,15 @@ def get_data(train_csv, test_csv):
 
 
 def plot_eigenvalues(data_df):
-    pca = PCA(random_state=0).fit(data_df)
+    pca = PCA(random_state=RANDOM_SEED).fit(data_df)
     eigenvalues = pca.explained_variance_
     fig = px.line(x=range(1, len(eigenvalues)+1), y=eigenvalues)
     fig.show()
 
 
 def apply_pca(x_train, x_test, pca_shape):
-    np.random.seed(0)
-    pca = PCA(n_components=pca_shape, random_state=0)
+    np.random.seed(RANDOM_SEED)
+    pca = PCA(n_components=pca_shape, random_state=RANDOM_SEED)
     x_train_pca = pca.fit_transform(x_train)
     if x_test is None:
         return x_train_pca
@@ -42,7 +45,7 @@ def apply_pca(x_train, x_test, pca_shape):
 
 
 def apply_umap(x_train, x_test, umap_shape):
-    reducer = umap.UMAP(n_components=umap_shape, random_state=0)
+    reducer = umap.UMAP(n_components=umap_shape, random_state=RANDOM_SEED)
     x_train_umap = reducer.fit_transform(x_train)
     if x_test is None:
         return x_train_umap
@@ -51,9 +54,9 @@ def apply_umap(x_train, x_test, umap_shape):
 
 
 def ae(x_train, x_test, pca_shape, enc_shape):
-    np.random.seed(0)
-    torch.manual_seed(0)
-    pca = PCA(n_components=pca_shape, random_state=0)
+    np.random.seed(RANDOM_SEED)
+    torch.manual_seed(RANDOM_SEED)
+    pca = PCA(n_components=pca_shape, random_state=RANDOM_SEED)
     x_train_pca = pca.fit_transform(x_train)
 
     device = ('cuda' if torch.cuda.is_available() else 'cpu')
@@ -72,9 +75,9 @@ def ae(x_train, x_test, pca_shape, enc_shape):
 
 
 def cae(x_train, x_test, pca_shape, enc_shape):
-    np.random.seed(0)
-    torch.manual_seed(0)
-    pca = PCA(n_components=pca_shape, random_state=0)
+    np.random.seed(RANDOM_SEED)
+    torch.manual_seed(RANDOM_SEED)
+    pca = PCA(n_components=pca_shape, random_state=RANDOM_SEED)
     x_train_pca = pca.fit_transform(x_train)
 
     device = ('cuda' if torch.cuda.is_available() else 'cpu')
@@ -93,9 +96,9 @@ def cae(x_train, x_test, pca_shape, enc_shape):
 
 
 def lstmae(x_train, x_test, pca_shape, enc_shape):
-    np.random.seed(0)
-    torch.manual_seed(0)
-    pca = PCA(n_components=pca_shape, random_state=0)
+    np.random.seed(RANDOM_SEED)
+    torch.manual_seed(RANDOM_SEED)
+    pca = PCA(n_components=pca_shape, random_state=RANDOM_SEED)
     x_train_pca = pca.fit_transform(x_train)
 
     device = ('cuda' if torch.cuda.is_available() else 'cpu')
@@ -114,9 +117,9 @@ def lstmae(x_train, x_test, pca_shape, enc_shape):
 
 
 def gruae(x_train, x_test, pca_shape, enc_shape):
-    np.random.seed(0)
-    torch.manual_seed(0)
-    pca = PCA(n_components=pca_shape, random_state=0)
+    np.random.seed(RANDOM_SEED)
+    torch.manual_seed(RANDOM_SEED)
+    pca = PCA(n_components=pca_shape, random_state=RANDOM_SEED)
     x_train_pca = pca.fit_transform(x_train)
 
     device = ('cuda' if torch.cuda.is_available() else 'cpu')
@@ -147,46 +150,47 @@ def plot_dimensions(x_train, y_train, x_test, y_test, title):
 
 
 def linear_regression(x_train, y_train, x_test, y_test):
-    np.random.seed(0)
+    np.random.seed(RANDOM_SEED)
     model = LogisticRegression().fit(x_train, y_train)
     y_pred = model.predict(x_test)
     return accuracy_score(y_test, y_pred)
 
 
 def random_forest(x_train, y_train, x_test, y_test):
-    np.random.seed(0)
+    np.random.seed(RANDOM_SEED)
     model = RandomForestClassifier().fit(x_train, y_train)
     y_pred = model.predict(x_test)
     return accuracy_score(y_test, y_pred)
 
 
 def svm(x_train, y_train, x_test, y_test):
-    np.random.seed(0)
+    np.random.seed(RANDOM_SEED)
     model = SVC().fit(x_train, y_train)
     y_pred = model.predict(x_test)
     return accuracy_score(y_test, y_pred)
 
 
 def mlp(x_train, y_train, x_test, y_test):
-    np.random.seed(0)
+    np.random.seed(RANDOM_SEED)
     model = MLPClassifier(max_iter=500).fit(x_train, y_train)
     y_pred = model.predict(x_test)
     return accuracy_score(y_test, y_pred)
 
 
 def k_means(x, y):
-    np.random.seed(0)
+    np.random.seed(RANDOM_SEED)
     model = KMeans(n_clusters=5).fit(x)
     y_pred = model.labels_
     return rand_score(y, y_pred), pd.DataFrame(y_pred, columns=['Population'])['Population'].astype(str)
 
 
-def run_inference(x_train, x_test, y_train, y_test, n_dimensions):
+def run_inference(x_train, x_test, y_train, y_test, model, n_dimensions):
+    print("Testing {}...".format(model))
     print("Logistic Regression:", linear_regression(x_train, y_train, x_test, y_test))
     print("Random Forest:", random_forest(x_train, y_train, x_test, y_test))
     print("SVM:", svm(x_train, y_train, x_test, y_test))
     print("MLP:", mlp(x_train, y_train, x_test, y_test))
-    plot_dimensions(x_train, y_train, x_test, y_test, title="Populations After Running PCA to {} Dimensions".format(n_dimensions))
+    plot_dimensions(x_train, y_train, x_test, y_test, title="Populations After Running {} to {} Dimensions".format(model, n_dimensions))
 
 
 if __name__ == "__main__":
@@ -199,47 +203,32 @@ if __name__ == "__main__":
     y = pd.concat([y_train, y_test])
     n_dimensions = 2
 
+    model = "PCA"
+    print("Training {}...".format(model))
     x_train_pca, x_test_pca = apply_pca(x_train, x_test, pca_shape=n_dimensions)
-    run_inference(x_train, x_test, y_train, y_test, n_dimensions)
+    run_inference(x_train_pca, x_test_pca, y_train, y_test, model, n_dimensions)
 
-    x_train_pca, x_test_pca = apply_pca(x_train, x_test, pca_shape=n_dimensions)
-    print("Logistic Regression:", linear_regression(x_train_pca, y_train, x_test_pca, y_test))
-    print("Random Forest:", random_forest(x_train_pca, y_train, x_test_pca, y_test))
-    print("SVM:", svm(x_train_pca, y_train, x_test_pca, y_test))
-    print("MLP:", mlp(x_train_pca, y_train, x_test_pca, y_test))
-    plot_dimensions(x_train_pca, y_train, x_test_pca, y_test, title="Populations After Running PCA to {} Dimensions".format(n_dimensions))
-
+    model = "UMAP"
+    print("Training {}...".format(model))
     x_train_umap, x_test_umap = apply_umap(x_train, x_test, umap_shape=n_dimensions)
-    print("Logistic Regression:", linear_regression(x_train_umap, y_train, x_test_umap, y_test))
-    print("Random Forest:", random_forest(x_train_umap, y_train, x_test_umap, y_test))
-    print("SVM:", svm(x_train_umap, y_train, x_test_umap, y_test))
-    print("MLP:", mlp(x_train_umap, y_train, x_test_umap, y_test))
-    plot_dimensions(x_train_umap, y_train, x_test_umap, y_test, title="Populations After Running UMAP to {} Dimensions".format(n_dimensions))
+    run_inference(x_train_umap, x_test_umap, y_train, y_test, model, n_dimensions)
 
+    model = "AE"
+    print("Training {}...".format(model))
     x_train_ae, x_test_ae = ae(x_train, x_test, pca_shape=256, enc_shape=n_dimensions)
-    print("Logistic Regression:", linear_regression(x_train_ae, y_train, x_test_ae, y_test))
-    print("Random Forest:", random_forest(x_train_ae, y_train, x_test_ae, y_test))
-    print("SVM:", svm(x_train_ae, y_train, x_test_ae, y_test))
-    print("MLP:", mlp(x_train_ae, y_train, x_test_ae, y_test))
-    plot_dimensions(x_train_ae, y_train, x_test_ae, y_test, title="Populations After Running AE to {} Dimensions".format(n_dimensions))
+    run_inference(x_train_ae, x_test_ae, y_train, y_test, model, n_dimensions)
 
+    model = "CAE"
+    print("Training {}...".format(model))
     x_train_cae, x_test_cae = cae(x_train, x_test, pca_shape=256, enc_shape=n_dimensions)
-    print("Logistic Regression:", linear_regression(x_train_cae, y_train, x_test_cae, y_test))
-    print("Random Forest:", random_forest(x_train_cae, y_train, x_test_cae, y_test))
-    print("SVM:", svm(x_train_cae, y_train, x_test_cae, y_test))
-    print("MLP:", mlp(x_train_cae, y_train, x_test_cae, y_test))
-    plot_dimensions(x_train_cae, y_train, x_test_cae, y_test, title="Populations After Running CAE to {} Dimensions".format(n_dimensions))
+    run_inference(x_train_cae, x_test_cae, y_train, y_test, model, n_dimensions)
 
+    model = "LSTMAE"
+    print("Training {}...".format(model))
     x_train_lstmae, x_test_lstmae = lstmae(x_train, x_test, pca_shape=256, enc_shape=n_dimensions)
-    print("Logistic Regression:", linear_regression(x_train_lstmae, y_train, x_test_lstmae, y_test))
-    print("Random Forest:", random_forest(x_train_lstmae, y_train, x_test_lstmae, y_test))
-    print("SVM:", svm(x_train_lstmae, y_train, x_test_lstmae, y_test))
-    print("MLP:", mlp(x_train_lstmae, y_train, x_test_lstmae, y_test))
-    plot_dimensions(x_train_lstmae, y_train, x_test_lstmae, y_test, title="Populations After Running LSTMAE to {} Dimensions".format(n_dimensions))
+    run_inference(x_train_lstmae, x_test_lstmae, y_train, y_test, model, n_dimensions)
 
+    model = "GRUAE"
+    print("Training {}...".format(model))
     x_train_gruae, x_test_gruae = gruae(x_train, x_test, pca_shape=256, enc_shape=n_dimensions)
-    print("Logistic Regression:", linear_regression(x_train_gruae, y_train, x_test_gruae, y_test))
-    print("Random Forest:", random_forest(x_train_gruae, y_train, x_test_gruae, y_test))
-    print("SVM:", svm(x_train_gruae, y_train, x_test_gruae, y_test))
-    print("MLP:", mlp(x_train_gruae, y_train, x_test_gruae, y_test))
-    plot_dimensions(x_train_gruae, y_train, x_test_gruae, y_test, title="Populations After Running GRUAE to {} Dimensions".format(n_dimensions))
+    run_inference(x_train_gruae, x_test_gruae, y_train, y_test, model, n_dimensions)
