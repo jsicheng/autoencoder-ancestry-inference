@@ -19,16 +19,33 @@ Each dimensionality reduction method is tested on various classication models. T
 
 In two dimensions, the low dimensional mappings of each dimensionality reduction method produced interesting plots:
 
-<div float="left">
-    <img src="/fig/pca_train.png" width="250" />
-    <img src="/fig/umap_train.png" width="250" />
-    <img src="/fig/ae_train.png" width="250" />
+<table align="center">
+<tr>
+    <td> PCA </td>
+    <td> UMAP </td>
+    <td> AE </td>
+</tr>
+<tr>
+    <td> <img src="/fig/pca_train.png" width="250" /> </td>
+    <td> <img src="/fig/umap_train.png" width="250" /> </td>
+    <td> <img src="/fig/ae_train.png" width="250" /> </td>
+</tr>
+<tr>
+    <td> CAE </td>
+    <td> LSTMAE </td>
+    <td> GRUAE </td>
+</tr>
+<tr>
+    <td> <img src="/fig/cae_train.png" width="250" /> </td>
+    <td> <img src="/fig/lstmae_train.png" width="250" /> </td>
+    <td> <img src="/fig/gruae_train.png" width="250" /> </td>
+</tr>
+
+
 <!-- | PCA | UMAP | AE |
 | ![PCA](/fig/pca_train.png) | ![UMAP](/fig/umap_train.png) | ![AE](/fig/ae_train.png) |
 | CAE | LSTMAE | GRUAE |
 | ![CAE](/fig/cae_train.png) | ![LSTMAE](/fig/LSTMAE_train.png) | ![GRUAE](/fig/gruae_train.png) | -->
-
-</div>
 
 ## Setup
 
