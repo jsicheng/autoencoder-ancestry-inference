@@ -2,7 +2,17 @@
 
 Read the paper [here](https://github.com/jsicheng/autoencoder-ancestry-inference/blob/main/Ancestry%20Inference%20in%20Low%20Dimensional%20Space%20Using%20Autoencoders.pdf).
 
+The focus of this project is to explore the viability of using autoencoders for dimensionality reduction and ancestry inference. Convolutional, LSTM and GRU autoencoders were built and tested against PCA, UMAP, and vanilla autoencoders. The architecture of all autoencoders are listed in the table below:
 
+
+Each dimensionality reduction method is tested on various classication models. The classification accuracies are presented in the table below:
+
+|                       | PCA    | UMAP     | AE    |
+| --------------------- | ------ | ----     | ----- |
+| Logistic Regression   | 0.888  | 0.936    | 0.934 |
+| Random Forest         | 0.882  | 0.902    | 0.954 |
+| SVM                   | 0.908  | 0.934    | 0.960 |
+| MLP                   | 0.916  | 0.934    | 0.956 |
 
 ## Setup
 
