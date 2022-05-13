@@ -40,6 +40,7 @@ In two dimensions, the low dimensional mappings of each dimensionality reduction
     <td> <img src="/fig/lstmae_train.png" width="250" /> </td>
     <td> <img src="/fig/gruae_train.png" width="250" /> </td>
 </tr>
+</table>
 
 
 <!-- | PCA | UMAP | AE |
