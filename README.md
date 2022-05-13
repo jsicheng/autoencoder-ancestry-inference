@@ -17,7 +17,7 @@ Each dimensionality reduction method is tested on various classication models. T
 
 </div>
 
-In two dimensions, the low dimensional mappings of each dimensionality reduction method produced interesting plots:
+In two dimensions, the low dimensional mappings of the training data from each dimensionality reduction method produced interesting plots:
 
 <table align="center">
 <tr>
