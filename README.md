@@ -20,9 +20,9 @@ Each dimensionality reduction method is tested on various classication models. T
 In two dimensions, the low dimensional mappings of each dimensionality reduction method produced interesting plots:
 
 <div float="left">
-    <img src="/fig/pca_train.png" width="100" />
-    <img src="/fig/umap_train.png" width="100" />
-    <img src="/fig/ae_train.png" width="100" />
+    <img src="/fig/pca_train.png" width="300" />
+    <img src="/fig/umap_train.png" width="300" />
+    <img src="/fig/ae_train.png" width="300" />
 <!-- | PCA | UMAP | AE |
 | ![PCA](/fig/pca_train.png) | ![UMAP](/fig/umap_train.png) | ![AE](/fig/ae_train.png) |
 | CAE | LSTMAE | GRUAE |
